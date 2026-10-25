@@ -5,11 +5,13 @@
 **Project Type:** Computer Networks Mini Project  
 **Evaluators:** Dr. Uma Pujeri and Dr. Swati
 
+**Repository:** [GitHub — Cross-Layer ABR Streaming Simulator](https://github.com/lakshynarang/cross-layer-abr-streaming-simulator)
+
 ---
 
 ## 1. Project Overview
 
-This project implements a Python-based adaptive audio/video streaming simulator designed to study streaming performance under unstable network conditions. It combines delay-gradient-based congestion awareness, adaptive bitrate (ABR) control, dynamic XOR-based Forward Error Correction (FEC), and audio-first graceful degradation.
+This project implements a Python-based adaptive audio/video streaming simulator designed to study streaming performance under unstable network conditions. It combines delay-gradient-based congestion awareness, Adaptive Bitrate (ABR) control, dynamic XOR-based Forward Error Correction (FEC), and audio-first graceful degradation.
 
 Conventional adaptive streaming approaches often depend on throughput estimates or buffer occupancy to decide when to adjust video quality. These approaches may not always respond quickly to sudden changes in network conditions.
 
@@ -22,7 +24,7 @@ The project integrates protocol design, UDP communication, network simulation, a
 - Implement UDP-based streaming communication using a custom RTP-like binary packet header.
 - Monitor changes in network delay and use delay gradients to help identify congestion.
 - Adapt streaming decisions according to simulated network conditions.
-- Implement XOR-based Forward Error Correction for recovering eligible packet losses.
+- Implement XOR-based Forward Error Correction to recover eligible packet losses.
 - Explore interleaving to improve resilience against burst packet loss.
 - Prioritize audio continuity during severe network degradation.
 - Evaluate performance through benchmarking and comparison with baseline strategies.
@@ -47,11 +49,11 @@ FEC recovery depends on the redundancy available and the pattern of packet losse
 
 During severe network degradation, maintaining audio continuity may be more useful than attempting to preserve high-quality video.
 
-The simulator explores reducing or suspending video delivery while prioritizing audio and applying additional protection where supported by the implementation.
+The simulator explores reducing or suspending video delivery while prioritizing audio and applying additional protection to improve continuity.
 
 ## 4. System Architecture
 
-The project is divided into components that handle packet representation, adaptive control, error recovery, network behaviour, streaming execution, and performance evaluation.
+The simulator is organized into components that handle packet representation, adaptive control, error recovery, network behaviour, streaming execution, and performance evaluation.
 
 ```text
 Streaming Source
@@ -75,19 +77,19 @@ Streaming Receiver / Recovery
 Benchmarking and Visualization
 ```
 
-The diagram represents the high-level design. The precise execution sequence is determined by the implementation in the source files.
+The architecture illustrates the main stages of the proposed streaming system.
 
 ### Packet Format
 
 The project uses a custom 16-byte RTP-like binary header encoded using Python's `struct` module and network byte order.
 
-The documented format string is:
+The header format uses the following format string:
 
 ```python
 struct.pack('!HIBBBBHI', ...)
 ```
 
-The `!` indicates network byte order (big-endian). This is a project-specific RTP-like format and should not be interpreted as full compliance with the standard RTP protocol.
+The `!` indicates network byte order (big-endian). This is a project-specific RTP-like format and is not intended to imply complete compliance with the standard RTP protocol.
 
 ## 5. Technology Stack
 
@@ -103,8 +105,6 @@ The `!` indicates network byte order (big-endian). This is a project-specific RT
 | Wireshark | Packet capture inspection |
 | Lua | Custom Wireshark dissector |
 | Mininet | Optional network-topology experiments |
-
-The documented dashboard architecture uses Python's built-in `http.server`. Flask should only be considered a project dependency if the submitted implementation actually imports or uses it.
 
 ## 6. Repository Structure
 
@@ -144,7 +144,7 @@ cross-layer-abr-streaming-simulator/
     └── test_report.md
 ```
 
-### Main Files
+### Main Files and Their Responsibilities
 
 | File | Description |
 |---|---|
@@ -157,8 +157,8 @@ cross-layer-abr-streaming-simulator/
 | `test_simulator.py` | Test suite |
 | `web_dashboard.py` | Local dashboard server |
 | `adaptive_streaming_simulator.html` | Dashboard interface |
-| `mininet_topology.py` | Optional Mininet experiments |
-| `wireshark_capture.py` | Packet-capture workflow support |
+| `mininet_topology.py` | Mininet-based network experiments |
+| `wireshark_capture.py` | Packet-capture workflow |
 | `wireshark_dissector.lua` | Custom Wireshark dissector |
 | `benchmark_comparison.png` | Benchmark comparison visualization |
 | `benchmark_metrics.json` | Structured benchmark metrics |
@@ -167,75 +167,73 @@ cross-layer-abr-streaming-simulator/
 | `docs/test_report.md` | Test report documentation |
 | `requirements.txt` | Python dependencies |
 
-The root-level result files and the files in `output/` are listed separately because both locations are present in the repository. Check the latest generated output before assuming that the copies are identical.
+The benchmark and capture artifacts are available in the repository, including copies under `output/`.
 
 ## 7. Prerequisites
 
-For the core simulator, install:
+Before running the project, ensure the following are installed:
 
-- Python 3.10 or newer.
-- pip, Python's package installer.
-- Git, if cloning the repository.
-- A modern web browser for the dashboard.
+- **Python 3.10 or newer** — required for the core simulator.
+- **pip** — Python package installer.
+- **Git** — for cloning the repository.
+- **A modern web browser** — for viewing the dashboard.
 
-Additional tools are required only for optional workflows:
+Additional tools are required for optional workflows:
 
-- **Wireshark:** for inspecting packet captures.
+- **Wireshark:** for inspecting packet captures and using the custom Lua dissector.
 - **Mininet:** for network-topology experiments on a supported Linux environment.
 
-## 8. Steps to Run the Project
+## 8. Installation and Setup
 
-Follow these steps from the repository's root directory.
+Follow these steps to download and run the project.
 
-### Step 1: Download the Project
+### Step 1: Clone the Repository
 
-Clone the GitHub repository:
+Open a terminal or command prompt and execute:
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/cross-layer-abr-streaming-simulator.git
+git clone https://github.com/lakshynarang/cross-layer-abr-streaming-simulator.git
 cd cross-layer-abr-streaming-simulator
 ```
 
-Replace `YOUR-USERNAME` with your GitHub username and confirm that the repository name matches your actual repository.
-
-Alternatively, download the repository as a ZIP file from GitHub, extract it, and open a terminal in the extracted project folder.
+Alternatively, download the repository as a ZIP file from GitHub, extract it, and open a terminal in the extracted project directory.
 
 ### Step 2: Install Dependencies
 
-Install the dependencies listed in `requirements.txt`:
+Install the required Python packages:
 
 ```bash
 python -m pip install -r requirements.txt
 ```
 
-If your system uses `python3`, run:
+If your system uses `python3`, execute:
 
 ```bash
 python3 -m pip install -r requirements.txt
 ```
 
-If the installation fails, check that Python and pip are installed and that the packages in `requirements.txt` are compatible with your Python version.
+After installation, the environment is ready to run the core simulator and its supporting scripts.
 
-### Step 3: Run the Benchmark
+## 9. Steps to Run the Project
 
-Execute:
+Run the following commands from the repository's root directory.
+
+### Step 1: Execute the Benchmark
 
 ```bash
 python benchmark.py
 ```
 
-This runs the project's benchmark workflow.
+This executes the benchmark workflow and evaluates the streaming approach against the available baseline strategies.
 
-Review the terminal output and the generated result files. The repository contains benchmark artifacts named:
+The project includes the following benchmark artifacts:
 
-- `benchmark_metrics.json`
-- `benchmark_comparison.png`
+- `benchmark_metrics.json` — structured benchmark measurements.
+- `benchmark_comparison.png` — visual comparison of benchmark results.
 
-The `output/` folder also contains copies of these artifacts. Check the paths printed by the script or inspect the relevant source code to confirm where the latest results are written.
+The `output/` directory also contains these result files. Open the generated visualization to compare performance and inspect the JSON file for the recorded metrics.
 
-The JSON file contains structured metrics, while the PNG file provides a visual comparison of benchmark results.
-
-### Step 4: Launch the Web Dashboard
+### Step 2: Launch the Web Dashboard
 
 Start the dashboard server:
 
@@ -243,139 +241,117 @@ Start the dashboard server:
 python web_dashboard.py
 ```
 
-Once the server starts, open the following address in your browser:
+Open the following address in your web browser:
 
 **http://127.0.0.1:8080**
 
-Keep the terminal open while using the dashboard. Stop the server with `Ctrl+C` when finished.
+The dashboard provides a browser-based interface for visualizing the simulator. Keep the terminal open while using it.
 
-If the page does not load, confirm that the server started successfully and that port `8080` is available.
+To stop the server, press `Ctrl+C` in the terminal.
 
-### Step 5: Run the Tests
+### Step 3: Run the Test Suite
 
-Execute the test script:
+Execute:
 
 ```bash
 python test_simulator.py -v
 ```
 
-The `-v` option requests verbose output if supported by the script.
+The test suite checks the simulator's implemented functionality. Review the terminal output to see the test results and identify any failures.
 
-If the script does not accept this option, run:
+For additional testing documentation, see [`docs/test_report.md`](docs/test_report.md).
 
-```bash
-python test_simulator.py
-```
+### Step 4: Inspect the Architecture
 
-Review the test results and investigate any failures before drawing conclusions about the simulator's correctness.
+Open [`docs/architecture.md`](docs/architecture.md) to understand the system's design and component interactions.
 
-For the documented testing procedure and results, see [`docs/test_report.md`](docs/test_report.md).
+This document complements the architecture overview provided in this README.
 
-### Step 6: Inspect the Architecture
+### Step 5: Review the Results
 
-To understand the system's design and component interactions, open:
+Inspect the benchmark artifacts:
 
-[`docs/architecture.md`](docs/architecture.md)
+- Open `benchmark_comparison.png` to view the performance comparison.
+- Open `benchmark_metrics.json` to examine the recorded metrics.
+- Check the corresponding files in `output/` when reviewing generated artifacts.
 
-This document provides additional architecture information beyond the overview in this README.
+Use the latest benchmark results when preparing a demonstration or project report.
 
-### Step 7: Inspect the Benchmark Results
+## 10. Wireshark Packet Analysis
 
-Open `benchmark_comparison.png` to view the benchmark visualization and `benchmark_metrics.json` to inspect the recorded metrics.
+The project includes a packet capture and a custom Lua dissector for inspecting the streaming protocol.
 
-The corresponding files in `output/` can also be inspected.
+### Step 1: Locate the Packet Capture
 
-Use the results produced by the latest benchmark run when preparing demonstrations or reports. Previously generated files may reflect different settings or earlier runs.
-
-## 9. Wireshark Packet Analysis
-
-The repository includes a packet capture and a Lua dissector for inspecting the project's custom packet format.
-
-### Step 1: Locate the Capture File
-
-The repository contains a capture named:
+The repository contains:
 
 ```text
 stream_capture.pcap
 ```
 
-A copy is also listed in:
+A copy is also available at:
 
 ```text
 output/stream_capture.pcap
 ```
 
-If the capture file is present and valid, you can open it directly in Wireshark.
+### Step 2: Open the Capture in Wireshark
 
-### Step 2: Open the Capture
-
-If Wireshark is installed, open the capture from the terminal:
+Open the capture from the terminal:
 
 ```bash
 wireshark output/stream_capture.pcap
 ```
 
-Alternatively, launch Wireshark and select **File → Open**, then choose the capture file.
+Alternatively, launch Wireshark manually and select **File → Open** to load the capture.
 
-### Step 3: Load the Custom Lua Dissector
+### Step 3: Load the Custom Dissector
 
-The project includes:
+The repository contains the custom dissector:
 
 ```text
 wireshark_dissector.lua
 ```
 
-On a system where Wireshark supports Lua dissectors, you can try loading the script when opening the capture:
+Load the dissector when launching Wireshark:
 
 ```bash
 wireshark -X lua_script:wireshark_dissector.lua output/stream_capture.pcap
 ```
 
-This command assumes the executable is named `wireshark`, the Lua script is in the current directory, and the capture is at the specified path.
-
-The dissector must match the actual packet format to decode fields correctly. If Wireshark does not load the script or display the expected fields, consult its Lua configuration and the implementation of the dissector.
+The custom dissector is intended to help interpret the project's packet header and related fields.
 
 ### What to Observe
 
-- Packet arrival timing.
-- Packet sequence and header information, where available.
-- Traffic behaviour under simulated network impairments.
-- FEC-related packets and recovery behaviour, if represented in the capture.
-- Any changes in packet transmission during adaptation.
+- Packet arrival timing and ordering.
+- Header information decoded by the custom dissector.
+- Traffic patterns under simulated network conditions.
+- FEC-related traffic and recovery behaviour, where represented in the capture.
+- Changes in transmission patterns during adaptive streaming.
 
-A packet capture alone does not establish that every lost packet was recovered or that playback remained uninterrupted. Compare observations with the benchmark output and test report.
+Correlate packet-level observations with benchmark measurements and the test report for a more complete evaluation.
 
-### Optional: Run the Capture Script
+The repository also includes `wireshark_capture.py` for the packet-capture workflow.
 
-The repository also contains:
+## 11. Optional Mininet Experiments
 
-```text
-wireshark_capture.py
-```
+The project includes `mininet_topology.py` for network-topology experiments using Mininet.
 
-Its exact arguments and execution behaviour depend on its implementation. Inspect the script before running it to determine whether it creates a capture, invokes Wireshark, or requires additional parameters.
+Mininet is optional and generally requires a supported Linux environment with the necessary permissions and dependencies.
 
-## 10. Optional Mininet Experiments
-
-The repository includes `mininet_topology.py` for optional topology-based network experiments.
-
-Mininet generally requires a supported Linux environment and appropriate permissions. It is not required for the basic Python benchmark or dashboard workflow.
-
-On a configured Linux system, the following is the expected form of command if the script is designed to launch its topology directly:
+On a configured Linux system, run:
 
 ```bash
 sudo python3 mininet_topology.py
 ```
 
-Before running it, inspect the script to confirm its requirements and behaviour. Use the instructions defined by the implementation if additional arguments, setup steps, or configuration are required.
+This workflow can be used to explore network behaviour in a topology-based environment. The core Python simulator, benchmark, and dashboard can be used independently of Mininet.
 
-If Mininet is unavailable, the core simulator can still be explored independently of this optional workflow.
-
-## 11. Performance Evaluation
+## 12. Performance Evaluation
 
 The project evaluates streaming behaviour under simulated network conditions and compares the proposed approach with available baseline strategies.
 
-Relevant performance measures may include:
+Relevant metrics include:
 
 - Number of playback stalls.
 - Total stall duration.
@@ -383,13 +359,11 @@ Relevant performance measures may include:
 - Response to changing network delay.
 - Packet-loss recovery.
 - The effect of FEC redundancy.
-- Audio continuity during severe degradation.
+- Audio continuity during severe network degradation.
 
-The actual metrics depend on the benchmark implementation.
+### Reported Simulation Results
 
-### Previously Reported Simulation Results
-
-The project's earlier benchmark notes reported the following results:
+The project's benchmark notes report the following results:
 
 | Metric | Reported result |
 |---|---:|
@@ -400,48 +374,48 @@ The project's earlier benchmark notes reported the following results:
 | Proposed approach: QoE score | 128.40 |
 | Rate-based baseline: QoE score | 63.05 |
 
-These are reported project results and have not been independently verified in this README. Confirm them against the current `benchmark_metrics.json` and a fresh benchmark run before presenting them as final results.
+These figures represent the project's reported simulation results. Their interpretation depends on the benchmark configuration and test conditions.
 
-Results from a simulation depend on its configuration and test conditions; they are not guarantees of performance on every real network.
+A zero-stall result in a particular simulation does not guarantee zero stalls under every network condition. The accompanying benchmark metrics and comparison plot provide the relevant experimental context.
 
-## 12. Limitations
+## 13. Limitations
 
 - The simulator models network conditions and cannot reproduce every characteristic of a real network.
 - XOR-based FEC can recover only losses supported by the available redundancy and recovery structure.
-- FEC adds overhead, which can affect performance when bandwidth is limited.
+- FEC introduces overhead, which can affect performance when bandwidth is limited.
 - Increasing delay can indicate congestion, but delay alone does not uniquely identify its cause.
-- The custom RTP-like header is not a claim of complete RTP standards compliance.
-- Benchmark results may change with network settings, implementation details, and baseline configurations.
-- Wireshark and Mininet workflows depend on local tool installations and operating-system support.
+- The custom RTP-like header does not imply complete compliance with the RTP standard.
+- Benchmark results depend on the simulation settings, implementation, and baseline configurations.
+- Wireshark and Mininet workflows depend on the local environment and installed tools.
 
-The project is intended as an educational and experimental simulator, not a production-ready streaming protocol.
+The project is intended as an educational and experimental simulator rather than a production-ready streaming protocol.
 
-## 13. Troubleshooting
+## 14. Troubleshooting
 
 | Problem | Suggested action |
 |---|---|
-| Python is not recognized | Install Python or use the appropriate executable, such as `python3`. |
-| A dependency is missing | Install the dependencies listed in `requirements.txt`. |
+| Python is not recognized | Check the Python installation or use `python3`. |
+| A dependency is missing | Install the packages listed in `requirements.txt`. |
 | Dashboard does not open | Confirm that `web_dashboard.py` is running and port `8080` is available. |
-| Benchmark fails | Read the error output and check the relevant source code and dependencies. |
-| Tests fail | Review the failed test output and consult `docs/test_report.md`. |
-| Capture file cannot be opened | Verify that the `.pcap` file exists and is a valid capture. |
+| Benchmark fails | Review the error output and relevant dependencies. |
+| Tests fail | Review the test output and consult `docs/test_report.md`. |
+| Capture file cannot be opened | Confirm that the `.pcap` file exists and is valid. |
 | Lua dissector does not load | Check Wireshark's Lua support and the path to the script. |
-| Mininet does not run | Verify the Linux environment, Mininet installation, permissions, and topology requirements. |
+| Mininet does not run | Check the Linux environment, installation, permissions, and topology requirements. |
 
-## 14. References
+## 15. References
 
-1. **Python Documentation** — https://docs.python.org/3/
-2. **RFC 3550: RTP — A Transport Protocol for Real-Time Applications** — https://www.rfc-editor.org/rfc/rfc3550
-3. **RFC 5109: RTP Payload Format for Generic Forward Error Correction** — https://www.rfc-editor.org/rfc/rfc5109
-4. **Wireshark Documentation** — https://www.wireshark.org/docs/
-5. **Mininet Documentation** — http://mininet.org/
-6. **Matplotlib Documentation** — https://matplotlib.org/stable/
-7. **Python `struct` Documentation** — https://docs.python.org/3/library/struct.html
+1. **Python Documentation:** https://docs.python.org/3/
+2. **RFC 3550 — RTP: A Transport Protocol for Real-Time Applications:** https://www.rfc-editor.org/rfc/rfc3550
+3. **RFC 5109 — RTP Payload Format for Generic Forward Error Correction:** https://www.rfc-editor.org/rfc/rfc5109
+4. **Wireshark Documentation:** https://www.wireshark.org/docs/
+5. **Mininet Documentation:** http://mininet.org/
+6. **Matplotlib Documentation:** https://matplotlib.org/stable/
+7. **Python `struct` Documentation:** https://docs.python.org/3/library/struct.html
 
-These references provide background on the underlying technologies. They do not independently validate the project's implementation or experimental results.
+These references provide background on the technologies and networking concepts used in the project.
 
-## 15. Computer Networks Course Relevance
+## 16. Computer Networks Course Relevance
 
 | Course concept | Application in the project |
 |---|---|
@@ -454,17 +428,17 @@ These references provide background on the underlying technologies. They do not 
 | Network performance | Stall and QoE evaluation |
 | Packet analysis | Wireshark and Lua dissector |
 | Network emulation | Optional Mininet topology |
-| Visualization | Benchmark comparison and dashboard |
+| Visualization | Benchmark comparison and web dashboard |
 
-The course checklist mentions Python, Mininet, Wireshark, Flask, and visualization. Python, Mininet, Wireshark, and visualization are represented in the documented project workflows. The documented dashboard architecture uses Python's built-in `http.server`; Flask should only be claimed as used if it is actually present in the submitted implementation.
+The project applies networking concepts through implementation, simulation, testing, and performance analysis. Python, Mininet, Wireshark, and visualization are represented in the documented workflows. The dashboard architecture uses Python's built-in `http.server`; Flask should only be listed as an implemented technology if it is actually used in the submitted code.
 
-## 16. Conclusion
+## 17. Conclusion
 
 The Cross-Layer Delay-Gradient ABR Streaming Simulator explores a coordinated approach to adaptive streaming by combining delay-aware control, dynamic XOR-based error recovery, and audio-first graceful degradation.
 
-Through protocol handling, network simulation, adaptive control, benchmarking, visualization, and optional packet analysis, the project provides a practical environment for studying the relationship between network conditions and streaming continuity.
+Through protocol handling, network simulation, adaptive control, benchmarking, visualization, and packet analysis, the project provides a practical environment for studying the relationship between network conditions and streaming continuity.
 
-The simulator can be used to examine the trade-offs between video quality, packet-loss recovery, redundancy, and audio continuity under changing network conditions.
+The simulator supports experimentation with the trade-offs between video quality, packet-loss recovery, redundancy, and audio continuity under changing network conditions.
 
 ---
 
