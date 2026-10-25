@@ -1,0 +1,110 @@
+{
+  "socket_verification": {
+    "udp_packets_sent": 60,
+    "proxy_forwarded": 51,
+    "proxy_dropped": 9,
+    "client_received": 51,
+    "xor_fec_recovered": 10,
+    "sample_headers": [
+      {
+        "seq_num": 1,
+        "timestamp_ms": 298839390,
+        "stream_type": "AUDIO",
+        "bitrate_tier": "720p (2500 kbps)",
+        "packet_type": "MEDIA_PAYLOAD",
+        "fec_group_id": 1,
+        "payload_size": 160,
+        "fec_k": 0,
+        "fec_idx": 0,
+        "stride_d": 1,
+        "frame_class": "I_FRAME_KEY",
+        "video_freeze": false,
+        "audio_redundant": false,
+        "header_hex": "00 01 11 CF ED 5E 00 01 00 01 00 A0 00 00 01 20"
+      },
+      {
+        "seq_num": 4,
+        "timestamp_ms": 298839390,
+        "stream_type": "VIDEO",
+        "bitrate_tier": "720p (2500 kbps)",
+        "packet_type": "MEDIA_PAYLOAD",
+        "fec_group_id": 0,
+        "payload_size": 476,
+        "fec_k": 4,
+        "fec_idx": 1,
+        "stride_d": 1,
+        "frame_class": "I_FRAME_KEY",
+        "video_freeze": false,
+        "audio_redundant": false,
+        "header_hex": "00 04 11 CF ED 5E 01 01 00 00 01 DC 04 01 01 20"
+      },
+      {
+        "seq_num": 6,
+        "timestamp_ms": 298839390,
+        "stream_type": "VIDEO",
+        "bitrate_tier": "720p (2500 kbps)",
+        "packet_type": "MEDIA_PAYLOAD",
+        "fec_group_id": 0,
+        "payload_size": 476,
+        "fec_k": 4,
+        "fec_idx": 3,
+        "stride_d": 1,
+        "frame_class": "I_FRAME_KEY",
+        "video_freeze": false,
+        "audio_redundant": false,
+        "header_hex": "00 06 11 CF ED 5E 01 01 00 00 01 DC 04 03 01 20"
+      },
+      {
+        "seq_num": 3,
+        "timestamp_ms": 298839390,
+        "stream_type": "VIDEO",
+        "bitrate_tier": "720p (2500 kbps)",
+        "packet_type": "MEDIA_PAYLOAD",
+        "fec_group_id": 0,
+        "payload_size": 476,
+        "fec_k": 4,
+        "fec_idx": 0,
+        "stride_d": 1,
+        "frame_class": "I_FRAME_KEY",
+        "video_freeze": false,
+        "audio_redundant": false,
+        "header_hex": "00 03 11 CF ED 5E 01 01 00 00 01 DC 04 00 01 20"
+      }
+    ]
+  },
+  "algorithms": {
+    "Novel Cross-Layer ABR": {
+      "avg_bitrate_kbps": 2346.67,
+      "stall_events": 0,
+      "total_stall_duration_sec": 0.0,
+      "switching_instability_count": 7,
+      "switching_magnitude_mbps": 12.4,
+      "qoe_score_mbps_scale": 128.4,
+      "qoe_score_kbps_scale": 128400.0,
+      "fec_recovery_efficiency_pct": 51.58,
+      "audio_survival_pct": 97.5
+    },
+    "Traditional BBA (Buffer-Based)": {
+      "avg_bitrate_kbps": 2030.0,
+      "stall_events": 6,
+      "total_stall_duration_sec": 16.702,
+      "switching_instability_count": 13,
+      "switching_magnitude_mbps": 17.3,
+      "qoe_score_mbps_scale": 32.68,
+      "qoe_score_kbps_scale": 32681.3,
+      "fec_recovery_efficiency_pct": 0.0,
+      "audio_survival_pct": 95.83
+    },
+    "Traditional Rate-Based": {
+      "avg_bitrate_kbps": 1875.0,
+      "stall_events": 4,
+      "total_stall_duration_sec": 7.036,
+      "switching_instability_count": 11,
+      "switching_magnitude_mbps": 19.2,
+      "qoe_score_mbps_scale": 63.05,
+      "qoe_score_kbps_scale": 63046.7,
+      "fec_recovery_efficiency_pct": 0.0,
+      "audio_survival_pct": 87.5
+    }
+  }
+}
