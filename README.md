@@ -1,7 +1,7 @@
 # Cross-Layer Delay-Gradient ABR with Dynamic FEC & Audio-First Survival
 
 **Course:** Computer Networks Mini-Project Evaluation  
-**Evaluator:** Dr. Swati  
+**Evaluator:** Dr. Uma Pujeri , Dr. Swati  
 **Problem Statement:** Adaptive Video/Audio Streaming Simulator — *Dynamically adapt transmission rate and media quality according to available bandwidth, queueing delay, and packet loss.*
 
 ## 1. Executive Summary & Core Technical Novelty
